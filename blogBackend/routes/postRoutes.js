@@ -1,5 +1,6 @@
 import express from "express";
 import Post from "../models/postModel.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -35,11 +36,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Delete post
-router.delete("/:id", async (req, res) => {
+// Delete post (Admin only)
+router.delete("/:id", protect, admin, async (req, res) => {
   try {
-    const deleted = await Post.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "Post not found" });
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    await post.deleteOne();
     res.json({ message: "Post deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function CreatePost() {
   const [form, setForm] = useState({ title: "", content: "", author: "" });
@@ -7,20 +9,27 @@ function CreatePost() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const { user } = useContext(AuthContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/posts`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
         body: JSON.stringify(form),
       });
       if (res.ok) {
-        alert("✅ Post added!");
-        window.location.reload(); // refresh the list
+        alert("Post added!");
+        window.location.reload();
+      } else {
+        alert("Failed to add post");
       }
     } catch (err) {
-      console.error("Error adding post:", err);
+      console.error(err);
     }
   };
 

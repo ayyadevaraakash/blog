@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import postRoutes from "./routes/postRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+
 dotenv.config();
 const app = express();
 
@@ -10,8 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-import postRoutes from "./routes/postRoutes.js";
 app.use("/api/posts", postRoutes);
+app.use("/api/users", userRoutes);
+
 
 // Connect MongoDB
 mongoose
