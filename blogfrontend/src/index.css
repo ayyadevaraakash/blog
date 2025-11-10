@@ -1,0 +1,12 @@
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f9fafb;
+  color: #111827;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
